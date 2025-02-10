@@ -24,6 +24,9 @@ getScheduleLink().then(ggsheetLink => {
     if (ggsheetLink) {
         const ggsheetCSVLink = ggsheetLink.replace("edit?usp=sharing", "export?format=csv");
 
+        const container = document.getElementById('schedule-container');
+        container.innerHTML = 'Đang tải dữ liệu...';
+
         fetch(ggsheetCSVLink)
         .then(response => response.text())
         .then(data => { 
@@ -33,6 +36,7 @@ getScheduleLink().then(ggsheetLink => {
         .catch(error => {
             alert("Không thể trích xuất dữ liệu:", error);
         });
+
 
     } else alert("Không tìm thấy liên kết Google Sheets");
 });
@@ -46,7 +50,9 @@ function searchClass(){
         return;
     }
 
+    localStorage.setItem('lastClass', className);
     classSchedule = [];
+
     let found = false;
     for (let i = 0; i < scheduleData.length; i++) {
         if (scheduleData[i].some(cell => cell.trim() == className)) {
@@ -92,3 +98,32 @@ function displaySchedule() {
     });
     container.appendChild(table);
 }
+
+// load dữ liệu khi truy cập vào web (từ localstorage)
+window.onload = async function () {
+    let lastClass = localStorage.getItem("lastClass");
+    
+    if (lastClass) {
+        document.getElementById('class-input').value = lastClass;
+
+        let ggsheetLink = await getScheduleLink();
+        if (ggsheetLink) {
+            const ggsheetCSVLink = ggsheetLink.replace("edit?usp=sharing", "export?format=csv");
+
+            fetch(ggsheetCSVLink)
+                .then(response => response.text())
+                .then(data => {
+                    scheduleData = data.split('\n').map(row =>
+                        row.split(',').map(cell => cell.trim().replace(/\r/g, ''))
+                    );
+
+                    searchClass();
+                })
+                .catch(error => {
+                    alert("Không thể trích xuất dữ liệu:", error);
+                });
+        } else {
+            alert("Không tìm thấy liên kết Google Sheets");
+        }
+    }
+};
