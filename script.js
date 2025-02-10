@@ -43,17 +43,19 @@ getScheduleLink().then(ggsheetLink => {
 
 let classSchedule = [];
 // tìm tên lớp nhập ở trong placeholder và lưu lại thời khóa biểu
-function searchClass(){
+function searchClass() {
     let className = document.getElementById('class-input').value.trim();
     if (!className) {
         alert("Vui lòng nhập tên lớp");
         return;
     }
 
-    localStorage.setItem('lastClass', className);
-    classSchedule = [];
+    const newUrl = window.location.origin + window.location.pathname + `?class=${encodeURIComponent(className)}`;
+    window.history.pushState({}, '', newUrl);
 
+    classSchedule = [];
     let found = false;
+
     for (let i = 0; i < scheduleData.length; i++) {
         if (scheduleData[i].some(cell => cell.trim() == className)) {
             found = true;
@@ -61,7 +63,6 @@ function searchClass(){
             for (let j = 0; j < 17 && (i + j) < scheduleData.length; j++) {
                 classSchedule.push(scheduleData[i + j]);
             }
-
             break;
         }
     }
@@ -72,6 +73,7 @@ function searchClass(){
         displaySchedule();
     }
 }
+
 
 // hiển thị thời khóa biểu
 function displaySchedule() {
@@ -101,8 +103,9 @@ function displaySchedule() {
 
 // load dữ liệu khi truy cập vào web (từ localstorage)
 window.onload = async function () {
-    let lastClass = localStorage.getItem("lastClass");
-    
+    const urlParams = new URLSearchParams(window.location.search);
+    let lastClass = urlParams.get('class'); 
+
     if (lastClass) {
         document.getElementById('class-input').value = lastClass;
 
@@ -117,9 +120,7 @@ window.onload = async function () {
                         row.split(',').map(cell => cell.trim().replace(/\r/g, ''))
                     );
 
-                    setTimeout(() => {
-                        searchClass();
-                    }, 1000);
+                    searchClass();
                 })
                 .catch(error => {
                     alert("Không thể trích xuất dữ liệu:", error);
@@ -129,3 +130,4 @@ window.onload = async function () {
         }
     }
 };
+
