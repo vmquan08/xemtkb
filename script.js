@@ -19,30 +19,34 @@ async function getScheduleLink() {
 }
 
 let scheduleData = [];
-// cái này để xuất dữ liệu từ link google sheet ra
-getScheduleLink().then(ggsheetLink => {
+
+// Cái này để xuất dữ liệu từ link Google Sheets ra
+async function loadData() {
+    const ggsheetLink = await getScheduleLink();
     if (ggsheetLink) {
         const ggsheetCSVLink = ggsheetLink.replace("edit?usp=sharing", "export?format=csv");
 
         const container = document.getElementById('schedule-container');
         container.innerHTML = 'Đang tải dữ liệu...';
 
-        fetch(ggsheetCSVLink)
-        .then(response => response.text())
-        .then(data => { 
-            scheduleData = data.split('\n').map(row => 
-                row.split(',').map(cell => cell.trim().replace(/\r/g, '')));
-        })
-        .catch(error => {
+        try {
+            const response = await fetch(ggsheetCSVLink);
+            const data = await response.text();
+
+            scheduleData = data.split('\n').map(row =>
+                row.split(',').map(cell => cell.trim().replace(/\r/g, ''))
+            );
+
+            console.log("Dữ liệu đã tải:", scheduleData);
+        } catch (error) {
             alert("Không thể trích xuất dữ liệu:", error);
-        });
+        }
+    } else {
+        alert("Không tìm thấy liên kết Google Sheets");
+    }
+}
 
-
-    } else alert("Không tìm thấy liên kết Google Sheets");
-});
-
-let classSchedule = [];
-// tìm tên lớp nhập ở trong placeholder và lưu lại thời khóa biểu
+// Tìm tên lớp nhập trong placeholder và lưu lại thời khóa biểu
 function searchClass() {
     let className = document.getElementById('class-input').value.trim();
     if (!className) {
@@ -74,8 +78,7 @@ function searchClass() {
     }
 }
 
-
-// hiển thị thời khóa biểu
+// Hiển thị thời khóa biểu
 function displaySchedule() {
     const container = document.getElementById('schedule-container');
     container.innerHTML = '';
@@ -86,7 +89,7 @@ function displaySchedule() {
     }
 
     const table = document.createElement('table');
-    table.classList.add('table')
+    table.classList.add('table');
 
     classSchedule.forEach((row, rowIndex) => {
         const tr = document.createElement('tr');
@@ -101,33 +104,15 @@ function displaySchedule() {
     container.appendChild(table);
 }
 
-// load dữ liệu khi truy cập vào web (từ localstorage)
+// Load dữ liệu khi truy cập vào web
 window.onload = async function () {
+    await loadData();
+
     const urlParams = new URLSearchParams(window.location.search);
     let lastClass = urlParams.get('class'); 
 
     if (lastClass) {
         document.getElementById('class-input').value = lastClass;
-
-        let ggsheetLink = await getScheduleLink();
-        if (ggsheetLink) {
-            const ggsheetCSVLink = ggsheetLink.replace("edit?usp=sharing", "export?format=csv");
-
-            fetch(ggsheetCSVLink)
-                .then(response => response.text())
-                .then(data => {
-                    scheduleData = data.split('\n').map(row =>
-                        row.split(',').map(cell => cell.trim().replace(/\r/g, ''))
-                    );
-
-                    searchClass();
-                })
-                .catch(error => {
-                    alert("Không thể trích xuất dữ liệu:", error);
-                });
-        } else {
-            alert("Không tìm thấy liên kết Google Sheets");
-        }
+        searchClass();
     }
 };
-
