@@ -117,7 +117,9 @@ window.onload = async function () {
                         row.split(',').map(cell => cell.trim().replace(/\r/g, ''))
                     );
 
-                    searchClass();
+                    setTimeout(() => {
+                        searchClass();
+                    }, 1000);
                 })
                 .catch(error => {
                     alert("Không thể trích xuất dữ liệu:", error);
