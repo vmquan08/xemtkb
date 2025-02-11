@@ -8,6 +8,8 @@ async function getScheduleLink() {
     
         const div = html.querySelector('.col-sm-9');
 
+        console.log(localStorage.getItem('lastClass'))
+
         if (div) {
             const ggsheetLink = div.querySelector('a[href*="https://docs.google.com/spreadsheets/d/"]')?.href;
             return ggsheetLink;
@@ -38,6 +40,7 @@ async function loadData() {
             );
 
             console.log("Dữ liệu đã tải:", scheduleData);
+            container.innerHTML = '';
         } catch (error) {
             alert("Không thể trích xuất dữ liệu:", error);
         }
@@ -48,7 +51,8 @@ async function loadData() {
 
 // Tìm tên lớp nhập trong placeholder và lưu lại thời khóa biểu
 function searchClass() {
-    let className = document.getElementById('class-input').value.trim();
+    let className = document.getElementById('class-input').value.trim().toUpperCase();
+    localStorage.setItem('lastClass', className);
     if (!className) {
         alert("Vui lòng nhập tên lớp");
         return;
@@ -108,8 +112,8 @@ function displaySchedule() {
 window.onload = async function () {
     await loadData();
 
-    const urlParams = new URLSearchParams(window.location.search);
-    let lastClass = urlParams.get('class'); 
+    const urlParameters = new URLSearchParams(window.location.search);
+    let lastClass = urlParameters.get('class'); 
 
     if (lastClass) {
         document.getElementById('class-input').value = lastClass;
