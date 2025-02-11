@@ -1,0 +1,30 @@
+table {
+    width: 100%; 
+    max-width: 716px; 
+    border-collapse: collapse; 
+    table-layout: fixed; 
+}
+
+th, td {
+    border: 1px solid black;
+    text-align: center; 
+    padding: 8px; 
+    width: 14.28%;
+    height: 40px;
+}
+
+@media (max-width: 768px) {
+    th, td {
+        font-size: 12px; 
+        padding: 5px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    th, td {
+        font-size: 10px;
+        padding: 3px;
+        height: 30px;
+    }
+}

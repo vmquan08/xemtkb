@@ -1,6 +1,8 @@
 async function getScheduleLink() {
     try {
-        const response = await fetch("https://api.allorigins.win/raw?url=https://thptbencat.edu.vn/category/thoi-khoa-bieu");
+        //const container = document.getElementById('schedule-container');
+
+        const response = await fetch("https://quan08corsproxy.quan20080108.workers.dev/https://thptbencat.edu.vn/category/thoi-khoa-bieu");
         const data = await response.text();
 
         const parser = new DOMParser();
@@ -15,7 +17,7 @@ async function getScheduleLink() {
             return ggsheetLink;
         } else return null;  
     } catch (error) {
-        alert("Lỗi:", error);
+        console.error("Lỗi:", error);
         return null;
     }
 }
@@ -30,6 +32,11 @@ async function loadData() {
 
         const container = document.getElementById('schedule-container');
         container.innerHTML = 'Đang tải dữ liệu...';
+        
+        lastClass = localStorage.getItem('lastClass');
+        if (lastClass) {
+            document.getElementById('class-input').value = lastClass;
+        }
 
         try {
             const response = await fetch(ggsheetCSVLink);
@@ -40,7 +47,6 @@ async function loadData() {
             );
 
             console.log("Dữ liệu đã tải:", scheduleData);
-            container.innerHTML = '';
         } catch (error) {
             alert("Không thể trích xuất dữ liệu:", error);
         }
@@ -49,17 +55,19 @@ async function loadData() {
     }
 }
 
+let classSchedule = [];
+
 // Tìm tên lớp nhập trong placeholder và lưu lại thời khóa biểu
 function searchClass() {
     let className = document.getElementById('class-input').value.trim().toUpperCase();
-    localStorage.setItem('lastClass', className);
+    localStorage.setItem('lastClass', className); // set lớp vàp localStorage
     if (!className) {
-        alert("Vui lòng nhập tên lớp");
+        alert("Vui lòng nhập lớp");
         return;
     }
 
-    const newUrl = window.location.origin + window.location.pathname + `?class=${encodeURIComponent(className)}`;
-    window.history.pushState({}, '', newUrl);
+    //const newUrl = window.location.origin + window.location.pathname + `?class=${encodeURIComponent(className)}`; // tạo đuôi cho địa chỉ web(tạm không dùng)
+    //window.history.pushState({}, '', newUrl);
 
     classSchedule = [];
     let found = false;
@@ -68,7 +76,7 @@ function searchClass() {
         if (scheduleData[i].some(cell => cell.trim() == className)) {
             found = true;
 
-            for (let j = 0; j < 17 && (i + j) < scheduleData.length; j++) {
+            for (let j = 0; j < 18 && (i + j) < scheduleData.length; j++) {
                 classSchedule.push(scheduleData[i + j]);
             }
             break;
@@ -92,28 +100,56 @@ function displaySchedule() {
         return;
     }
 
-    const table = document.createElement('table');
-    table.classList.add('table');
+    const className = classSchedule[0][4];
+    const startTime = classSchedule[1][5];
+    container.innerHTML = `<h2>Lớp ${className} - Áp dụng từ ngày ${startTime}</h2>`;
+    
+    //in thời khóa biểu -----------------------------------------------------------------
+    container.innerHTML += `<h3>Buổi sáng</h3>`;
+    
+    const morningTable = document.createElement('table');
+    morningTable.classList.add('table', 'table-bordered');
 
-    classSchedule.forEach((row, rowIndex) => {
+    for (let i = 3; i < 9; i++) {
         const tr = document.createElement('tr');
 
-        row.forEach((cell, cellIndex) => {
-            const cellElement = rowIndex === 0 ? document.createElement('th') : document.createElement('td');   
+        classSchedule[i].forEach((cell, index) => {
+            const cellElement = i === 3 ? document.createElement('th') : document.createElement('td');
             cellElement.textContent = cell;
             tr.appendChild(cellElement);
         });
-        table.appendChild(tr);
-    });
-    container.appendChild(table);
+
+        morningTable.appendChild(tr);
+    }
+    container.appendChild(morningTable);
+
+    container.innerHTML += `<h3>Buổi chiều</h3>`;
+
+    const afternoonTable = document.createElement('table');
+    afternoonTable.classList.add('table', 'table-bordered');
+
+    for (let i = 11; i < 17; i++) {
+        const tr = document.createElement('tr');
+        classSchedule[i].forEach((cell, index) => {
+            const cellElement = i === 11 ? document.createElement('th') : document.createElement('td');
+            cellElement.textContent = cell;
+            tr.appendChild(cellElement);
+        });
+        afternoonTable.appendChild(tr);
+    }
+    container.appendChild(afternoonTable);
+
+    console.log(classSchedule);
 }
 
 // Load dữ liệu khi truy cập vào web
 window.onload = async function () {
     await loadData();
 
-    const urlParameters = new URLSearchParams(window.location.search);
-    let lastClass = urlParameters.get('class'); 
+    //const urlParameters = new URLSearchParams(window.location.search);
+    //let lastClass = urlParameters.get('class'); 
+
+    let lastClass = localStorage.getItem('lastClass');
 
     if (lastClass) {
         document.getElementById('class-input').value = lastClass;
