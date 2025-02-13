@@ -45,7 +45,7 @@ async function loadData() {
             scheduleData = data.split('\n').map(row =>
                 row.split(',').map(cell => cell.trim().replace(/\r/g, ''))
             );
-
+            container.innerHTML = '';
             console.log("Dữ liệu đã tải:", scheduleData);
         } catch (error) {
             alert("Không thể trích xuất dữ liệu:", error);

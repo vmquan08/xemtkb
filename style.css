@@ -1,3 +1,7 @@
+h1 {
+    font-family: "Open Sans", sans-serif;
+}
+
 table {
     width: 100%; 
     max-width: 716px; 
@@ -11,6 +15,14 @@ th, td {
     padding: 8px; 
     width: 14.28%;
     height: 40px;
+}
+
+th:first-child, td:first-child {
+    width: 8%; 
+}
+
+th:not(:first-child), td:not(:first-child) {
+    width: 15.33%; 
 }
 
 @media (max-width: 768px) {
@@ -27,4 +39,9 @@ th, td {
         padding: 3px;
         height: 30px;
     }
+}
+
+#class-input {
+    width: 150px;
+    padding: 1px;
 }
