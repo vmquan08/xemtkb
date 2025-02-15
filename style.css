@@ -45,3 +45,12 @@ th:not(:first-child), td:not(:first-child) {
     width: 150px;
     padding: 1px;
 }
+
+.table th {
+    background-color: #00ffff;
+    height: 30px;
+}
+
+.table td:first-child {
+    background-color: #00ffff;
+}
