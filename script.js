@@ -1,21 +1,27 @@
 async function getScheduleLink() {
     try {
-        //const container = document.getElementById('schedule-container');
-
-        const response = await fetch("https://quan08corsproxy.quan20080108.workers.dev/https://thptbencat.edu.vn/category/thoi-khoa-bieu");
+        const baseUrl = "https://quan08corsproxy.quan20080108.workers.dev/https://thptbencat.edu.vn";
+        
+        const response = await fetch(baseUrl + "/category/thoi-khoa-bieu");
         const data = await response.text();
 
         const parser = new DOMParser();
         const html = parser.parseFromString(data, 'text/html');
-    
         const div = html.querySelector('.col-sm-9');
-
-        console.log(localStorage.getItem('lastClass'))
-
         if (div) {
-            const ggsheetLink = div.querySelector('a[href*="https://docs.google.com/spreadsheets/d/"]')?.href;
-            return ggsheetLink;
-        } else return null;  
+            const scheduleLink = div.querySelector('a')?.getAttribute('href');
+            console.log(scheduleLink);
+            if (scheduleLink) {
+                const scheduleResponse = await fetch(baseUrl + scheduleLink);
+                const scheduleData = await scheduleResponse.text();
+                
+                const schedulePage = parser.parseFromString(scheduleData, 'text/html');
+                const ggsheetLink = schedulePage.querySelector('a[href*="https://docs.google.com/spreadsheets/d/"]')?.href;
+                
+                return ggsheetLink;
+            }
+        }
+        return null;
     } catch (error) {
         console.error("Lỗi:", error);
         return null;
