@@ -49,9 +49,15 @@ async function loadData() {
             const data = await response.text();
 
             scheduleData = data.split('\n').map(row =>
-                row.split(',').map(cell => cell.trim().replace(/\r/g, ''))
+                row.split(',').map(cell => 
+                    cell.trim()
+                        .replace(/\r/g, '')
+                        .replace(/^"/, '')  
+                        .replace(/"$/, '')  
+                )
             );
             container.innerHTML = '';
+       
             console.log("Dữ liệu đã tải:", scheduleData);
             alert(scheduleData);
         } catch (error) {
