@@ -116,7 +116,7 @@ function displaySchedule() {
     const className = classSchedule[0][4];
     const startTime = classSchedule[1][5];
     container.innerHTML = `<h2>Lớp ${className} - Áp dụng từ ngày ${startTime}</h2>`;
-    alert(classSchedule);
+    alert("hiện tại web đang lỗi do format mới của thời khóa biểu nhà trường gửi và admin đang đi học🥺,các bạn vui lòng thử lại sau nhé!");
     //in thời khóa biểu -----------------------------------------------------------------
     container.innerHTML += `<h3>Buổi sáng</h3>`;
     
