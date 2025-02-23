@@ -35,7 +35,7 @@ async function loadData() {
     const ggsheetLink = await getScheduleLink();
     if (ggsheetLink) {
         const ggsheetCSVLink = ggsheetLink.replace("edit?usp=sharing", "gviz/tq?tqx=out:csv&sheet=TKBLop");
-    alert(ggsheetCSVLink);
+   
         const container = document.getElementById('schedule-container');
         container.innerHTML = 'Đang tải dữ liệu...';
         
@@ -53,6 +53,7 @@ async function loadData() {
             );
             container.innerHTML = '';
             console.log("Dữ liệu đã tải:", scheduleData);
+            alert(scheduleData);
         } catch (error) {
             alert("Không thể trích xuất dữ liệu:", error);
         }
