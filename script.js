@@ -89,7 +89,7 @@ function searchClass() {
         if (scheduleData[i].some(cell => cell.trim() == className)) {
             found = true;
 
-            for (let j = 0; j < 18 && (i + j) < scheduleData.length; j++) {
+            for (let j = 0; j < 14 && (i + j) < scheduleData.length; j++) {
                 classSchedule.push(scheduleData[i + j]);
             }
             break;
