@@ -34,7 +34,7 @@ let scheduleData = [];
 async function loadData() {
     const ggsheetLink = await getScheduleLink();
     if (ggsheetLink) {
-        const ggsheetCSVLink = ggsheetLink.replace("edit?usp=sharing", "export?format=csv");
+        const ggsheetCSVLink = ggsheetLink.replace("edit?usp=sharing", "gviz/tq?tqx=out:csv&sheet=TKBLop");
 
         const container = document.getElementById('schedule-container');
         container.innerHTML = 'Đang tải dữ liệu...';
