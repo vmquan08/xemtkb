@@ -59,7 +59,7 @@ async function loadData() {
             container.innerHTML = '';
        
             console.log("Dữ liệu đã tải:", scheduleData);
-            alert(scheduleData);
+            
         } catch (error) {
             alert("Không thể trích xuất dữ liệu:", error);
         }
@@ -116,7 +116,7 @@ function displaySchedule() {
     const className = classSchedule[0][4];
     const startTime = classSchedule[1][5];
     container.innerHTML = `<h2>Lớp ${className} - Áp dụng từ ngày ${startTime}</h2>`;
-    
+    alert(classSchedule);
     //in thời khóa biểu -----------------------------------------------------------------
     container.innerHTML += `<h3>Buổi sáng</h3>`;
     
