@@ -92,7 +92,6 @@ function searchClass() {
             for (let j = 0; j < 14 && (i + j) < scheduleData.length; j++) {
                 classSchedule.push(scheduleData[i + j]);
             }
-            console.log(classSchedule);
             break;
         }
     }
@@ -117,18 +116,18 @@ function displaySchedule() {
     const className = classSchedule[0][4];
     const startTime = classSchedule[1][5];
     container.innerHTML = `<h2>Lớp ${className} - Áp dụng từ ngày ${startTime}</h2>`;
-    
+    alert("hiện tại web đang lỗi do format mới của thời khóa biểu nhà trường gửi và admin đang đi học🥺,các bạn vui lòng thử lại sau nhé!");
     //in thời khóa biểu -----------------------------------------------------------------
     container.innerHTML += `<h3>Buổi sáng</h3>`;
     
     const morningTable = document.createElement('table');
     morningTable.classList.add('table', 'table-bordered');
 
-    for (let i = 2; i < 8; i++) {
+    for (let i = 3; i < 9; i++) {
         const tr = document.createElement('tr');
 
-        classSchedule[i].slice(0, 7).forEach((cell, index) => {
-            const cellElement = i === 2 ? document.createElement('th') : document.createElement('td');
+        classSchedule[i].forEach((cell, index) => {
+            const cellElement = i === 3 ? document.createElement('th') : document.createElement('td');
             cellElement.textContent = cell;
             tr.appendChild(cellElement);
         });
@@ -142,10 +141,10 @@ function displaySchedule() {
     const afternoonTable = document.createElement('table');
     afternoonTable.classList.add('table', 'table-bordered');
 
-    for (let i = 8; i < 14; i++) {
+    for (let i = 11; i < 17; i++) {
         const tr = document.createElement('tr');
-        classSchedule[i].slice(0, 7).forEach((cell, index) => {
-            const cellElement = i === 8 ? document.createElement('th') : document.createElement('td');
+        classSchedule[i].forEach((cell, index) => {
+            const cellElement = i === 11 ? document.createElement('th') : document.createElement('td');
             cellElement.textContent = cell;
             tr.appendChild(cellElement);
         });
