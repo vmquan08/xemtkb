@@ -1,0 +1,32 @@
+name: Fetch Schedule
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install axios cheerio
+
+      - name: Run script
+        run: node fetch.js
+
+      - name: Commit and push data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/schedule.json
+          git commit -m "Update schedule data" || echo "No changes"
+          git push

@@ -1,0 +1,26 @@
+{
+  "name": "xemtkb",
+  "version": "1.0.0",
+  "description": "<3 from 11C7 with love",
+  "main": "fetch.js",
+  "type": "module", 
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vmquan08/xemtkb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vmquan08/xemtkb/issues"
+  },
+  "homepage": "https://github.com/vmquan08/xemtkb#readme",
+  "dependencies": {
+    "axios": "^1.10.0",
+    "cheerio": "^1.1.0",
+    "papaparse": "^5.5.3"
+  }
+}
