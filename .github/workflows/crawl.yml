@@ -2,8 +2,8 @@ name: Crawl HTML
 
 on:
   schedule:
-    - cron: '0 */6 * * *'   # chạy mỗi 6 tiếng
-  workflow_dispatch:         # cho phép chạy thủ công từ giao diện
+    - cron: '0 */6 * * *'  
+  workflow_dispatch:   
 
 jobs:
   build:
