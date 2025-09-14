@@ -1,6 +1,6 @@
 async function getScheduleLink() {
     try {
-        const baseUrl = "https://quan08corsproxy.quan20080108.workers.dev/https://thptbencat.edu.vn";
+        const baseUrl = "https://tofproxy.trithucmo.site/url?target=https://thptbencat.edu.vn";
         
         const response = await fetch(baseUrl + "/category/thoi-khoa-bieu");
         const data = await response.text();
@@ -18,6 +18,7 @@ async function getScheduleLink() {
                 const schedulePage = parser.parseFromString(scheduleData, 'text/html');
                 const ggsheetLink = schedulePage.querySelector('a[href*="https://docs.google.com/spreadsheets/d/"]')?.href;
                 
+                console.log(ggsheetLink);
                 return ggsheetLink;
             }
         }
@@ -29,12 +30,13 @@ async function getScheduleLink() {
 }
 
 let scheduleData = [];
+const sheet_name = 'TKBLop';
 
 // Cái này để xuất dữ liệu từ link Google Sheets ra
 async function loadData() {
     const ggsheetLink = await getScheduleLink();
     if (ggsheetLink) {
-        const ggsheetCSVLink = ggsheetLink.replace("edit?usp=sharing", "gviz/tq?tqx=out:csv&sheet=TKBLop");
+        const ggsheetCSVLink = ggsheetLink.replace(/\/edit.*$/, `/gviz/tq?tqx=out:csv&sheet=${sheet_name}`);
    
         const container = document.getElementById('schedule-container');
         container.innerHTML = 'Đang tải dữ liệu...';
