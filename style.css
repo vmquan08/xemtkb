@@ -1,3 +1,7 @@
+html, body {
+    margin: 0;
+}
+
 h1 {
     font-family: "Open Sans", sans-serif;
 }
@@ -41,11 +45,6 @@ th:not(:first-child), td:not(:first-child) {
     }
 }
 
-#class-input {
-    width: 150px;
-    padding: 1px;
-}
-
 .table th {
     background-color: #00ffff;
     height: 30px;
@@ -53,4 +52,40 @@ th:not(:first-child), td:not(:first-child) {
 
 .table td:first-child {
     background-color: #00ffff;
+}
+
+#top-menu {
+    background: linear-gradient(90deg, #5fc9fa, #4dbff8);
+    color: white;
+    font-weight: 600;
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+a.button-link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #0ea5e9; 
+    color: white;              
+    font-weight: 500;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+}
+
+a.button-link:hover {
+    background-color: #0284c7; 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+}
+
+a.button-link:active {
+    background-color: #0369a1;
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
