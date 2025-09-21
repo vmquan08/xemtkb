@@ -37,7 +37,7 @@ async function loadData() {
     const ggsheetLink = await getScheduleLink();
     if (ggsheetLink) {
         const ggsheetCSVLink = ggsheetLink.replace(/\/edit.*$/, `/gviz/tq?tqx=out:csv&sheet=${sheet_name}`);
-   
+        console.log(ggsheetCSVLink);
         const container = document.getElementById('schedule-container');
         container.innerHTML = 'Đang tải dữ liệu...';
         
