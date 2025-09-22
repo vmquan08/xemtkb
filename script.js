@@ -63,7 +63,7 @@ async function loadData() {
             console.log("Dữ liệu đã tải:", scheduleData);
             
         } catch (error) {
-            alert("Không thể trích xuất dữ liệu:", error);
+            alert("Không thể trích xuất dữ liệu:" + error);
         }
     } else {
         alert("Không tìm thấy liên kết Google Sheets");
@@ -172,3 +172,20 @@ window.onload = async function () {
         searchClass();
     }
 };
+
+const toggleBtn = document.getElementById("dark-toggle");
+
+if (localStorage.getItem("darkMode") === "enabled") {
+    document.body.classList.add("dark-mode");
+    toggleBtn.checked = true;
+}
+
+toggleBtn.addEventListener("change", () => {
+    if (toggleBtn.checked) {
+        document.body.classList.add("dark-mode");
+        localStorage.setItem("darkMode", "enabled");
+    } else {
+        document.body.classList.remove("dark-mode");
+        localStorage.setItem("darkMode", "disabled");
+    }
+});
